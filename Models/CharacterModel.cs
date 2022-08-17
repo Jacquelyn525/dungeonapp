@@ -8,5 +8,15 @@ namespace Models
 {
     public class CharacterModel
     {
+        public string Name
+        {
+            get; 
+            private set; 
+        }
+
+        public CharacterModel(string name)
+        {
+            this.Name = name;
+        }
     }
 }
