@@ -14,8 +14,8 @@ namespace Dungeon
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("*-*-*-*-*-Welcome to the Dungeon!-*-*-*-*-*\n");
-            Console.Title = "*-*-*-*-*Dungeon Crawler*-*-*-*-*";
+            Console.WriteLine("*-*-*-*-*-Welcome to the Supernatural Game!-*-*-*-*-*\n");
+            Console.Title = "*-*-*-*-*Supernatural*-*-*-*-*";
             GameLoop();
             Console.WriteLine("Thanks for playing! Come back soon!");
 
@@ -30,24 +30,37 @@ namespace Dungeon
         {
             PlayerModel player = new PlayerModel();
             bool exitGame = false;
+            // a new game has begun with the creation of the player.
 
-            do
+
+            do // this do loop represents the life (and eventual death) of your character.
             {
-                if (player.Character is null)
+
+                if (player.Character is null) // does the player have a living character?  If no (due to death or new game, then make one)
                 {
+                    // your new character is born inside here.
                     Console.WriteLine("Please create a new character.");
                     player.CreateCharacter();
                 }
                 else
                 {
+                    // inside here is the story of your character.
+                    // upon first creation of the character we can assume he/she has just set foot inside the dungeon.
+                    // or the character has either 'ran' from an enounter with a monster or has 'beaten' a monster in combat
+
                     #region Inner Loop
 
                     Console.Clear();
                     string choice = string.Empty;
 
+                    string currentRoom = player.GetRoomDescription();
+                    MonsterModel monster = new MonsterModel();
+                    // a new room (theme) and encounter (monster to fight) must now be generated before entering the combat loop.
+
                     do
                     {
                         // Menu
+                        Console.WriteLine(currentRoom + "\n\nYou see a " + monster.Race + " standing in the shadow.\n\n");
                         Console.WriteLine("<--Make your next move!-->\n");
                         Console.WriteLine("A. Attack\n" +
                                           "B. Run Away\n" +
@@ -55,10 +68,10 @@ namespace Dungeon
                                           "D. Monster Info\n" +
                                           "E. Exit");
 
-                        string action = Console.ReadKey(true).Key.ToString();
+                        choice = Console.ReadKey(true).Key.ToString();
                         Console.Clear();
 
-                        switch (action)
+                        switch (choice)
                         {
                             case "A":
                                 Console.WriteLine("Attack");
@@ -70,10 +83,12 @@ namespace Dungeon
 
                             case "C":
                                 Console.WriteLine("Character Info");
+                                DisplayCharacterInfo(player.Character);
                                 break;
 
                             case "D":
                                 Console.WriteLine("Monster Info");
+                                DisplayMonsterInfo(monster);
                                 break;
 
                             case "E":
@@ -86,8 +101,19 @@ namespace Dungeon
                                 break;
                         }
 
-                    } while (!exitGame);
+                    } while (exitGame != true && choice.ToLower() != "b");
 
+                    if (choice.ToLower() == "b")
+                    {
+                        Console.WriteLine("You ran away!! \n\nPress Q to quit \nPress any other key to enter another room.");
+                        string selection = Console.ReadKey(true).Key.ToString();
+                        
+                        if (selection.ToLower() == "q")
+                        {
+                            exitGame = true;
+                        }
+
+                    }
                     #endregion Inner Loop
 
                 }
@@ -99,5 +125,39 @@ namespace Dungeon
 
 
         }//end GameLoop
+
+        static void DisplayCharacterInfo(CharacterModel character)
+        {
+            Console.Clear();
+
+            Console.WriteLine($"Name:      {character.Name}");
+            Console.WriteLine($"Race:      {character.Race}");
+            Console.WriteLine($"Hitpoints: {character.HitPoints}");
+            Console.WriteLine($"Attack:    {character.Attack}");
+            Console.WriteLine($"Defense:   {character.Defense}");
+            Console.WriteLine($"Weapon:    {character.Weapon}");
+
+
+            Console.WriteLine("");
+            Console.WriteLine("Press any key to return to menu...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        static void DisplayMonsterInfo(MonsterModel monster)
+        {
+            Console.Clear();
+
+            Console.WriteLine($"Race:       {monster.Race}");
+            Console.WriteLine($"Hitpoints:  {monster.HitPoints}");
+            Console.WriteLine($"Attack:     {monster.Attack}");
+            Console.WriteLine($"Defense:    {monster.Defense}");
+
+            Console.WriteLine("");
+            Console.WriteLine("Press any key to return to menu...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
     }//end class
 }//end namespace
