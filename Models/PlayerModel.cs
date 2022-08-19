@@ -51,6 +51,8 @@
                 "In the abandoned warehouse you hear faint screams in the distance.",
                 "Walking out in the woods you are suddenly surrounded by eerie black smoke.",
                 "The lights flicker on and off.",
+                "You wake up in a different reality",
+                ""
                 
             };
 
