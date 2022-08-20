@@ -63,9 +63,10 @@ namespace Dungeon
                         Console.WriteLine(currentRoom + "\n\nYou see a " + monster.Race + " standing in the shadow.\n\n");
                         Console.WriteLine("<--Make your next move!-->\n");
                         Console.WriteLine("A. Attack\n" +
-                                          "B. Run Away\n" +
+                                          "R. Run Away\n" +
                                           "C. Character Info\n" +
-                                          "D. Monster Info\n" +
+                                          "M. Monster Info\n" +
+                                          "W. Weapon Info\n" +
                                           "E. Exit");
 
                         choice = Console.ReadKey(true).Key.ToString();
@@ -77,7 +78,7 @@ namespace Dungeon
                                 Console.WriteLine("Attack");
                                 break;
 
-                            case "B":
+                            case "R":
                                 Console.WriteLine("Run Away");
                                 break;
 
@@ -86,9 +87,14 @@ namespace Dungeon
                                 DisplayCharacterInfo(player.Character);
                                 break;
 
-                            case "D":
+                            case "M":
                                 Console.WriteLine("Monster Info");
                                 DisplayMonsterInfo(monster);
+                                break;
+
+                            case "W":
+                                Console.WriteLine("Weapon Info");
+                                DisplayWeaponInfo(player.Character.EquippedWeapon);
                                 break;
 
                             case "E":
@@ -101,9 +107,9 @@ namespace Dungeon
                                 break;
                         }
 
-                    } while (exitGame != true && choice.ToLower() != "b");
+                    } while (exitGame != true && choice.ToLower() != "r");
 
-                    if (choice.ToLower() == "b")
+                    if (choice.ToLower() == "r")
                     {
                         Console.WriteLine("You ran away!! \n\nPress Q to quit \nPress any other key to enter another room.");
                         string selection = Console.ReadKey(true).Key.ToString();
@@ -132,10 +138,10 @@ namespace Dungeon
 
             Console.WriteLine($"Name:      {character.Name}");
             Console.WriteLine($"Race:      {character.Race}");
-            Console.WriteLine($"Hitpoints: {character.HitPoints}");
+            Console.WriteLine($"Life:      {character.Life}");
             Console.WriteLine($"Attack:    {character.Attack}");
             Console.WriteLine($"Defense:   {character.Defense}");
-            Console.WriteLine($"Weapon:    {character.Weapon}");
+            
 
 
             Console.WriteLine("");
@@ -149,7 +155,7 @@ namespace Dungeon
             Console.Clear();
 
             Console.WriteLine($"Race:       {monster.Race}");
-            Console.WriteLine($"Hitpoints:  {monster.HitPoints}");
+            Console.WriteLine($"Life:       {monster.Life}");
             Console.WriteLine($"Attack:     {monster.Attack}");
             Console.WriteLine($"Defense:    {monster.Defense}");
 
@@ -157,6 +163,22 @@ namespace Dungeon
             Console.WriteLine("Press any key to return to menu...");
             Console.ReadKey();
             Console.Clear();
+        }
+
+        static void DisplayWeaponInfo(WeaponModel weapon)
+        {
+            Console.Clear();
+
+            Console.WriteLine($"Name:             {weapon.Name}");
+            Console.WriteLine($"MinDamage:        {weapon.MinDamage}");
+            Console.WriteLine($"MaxDamage:        {weapon.MaxDamage}");
+            Console.WriteLine($"Is Two Handed:    {weapon.IsTwoHanded}");
+
+            Console.WriteLine("");
+            Console.WriteLine("Press any key to return to menu...");
+            Console.ReadKey();
+            Console.Clear();
+
         }
 
     }//end class
