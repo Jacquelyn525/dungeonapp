@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Models;
+﻿using DungeonLibrary;
+using MonsterLibrary;
 
 
 
@@ -16,170 +11,144 @@ namespace Dungeon
         {
             Console.WriteLine("*-*-*-*-*-Welcome to the Supernatural Game!-*-*-*-*-*\n");
             Console.Title = "*-*-*-*-*Supernatural*-*-*-*-*";
-            GameLoop();
-            Console.WriteLine("Thanks for playing! Come back soon!");
+
+
+            int score = 0;
+
+
+            Weapon colt = new Weapon(8, 1, "The Colt", 10, false, WeaponType.Colt);
+
+            Console.WriteLine("Hello Hunter! What is your name? ");
+            string userName = Console.ReadLine();
+            
+            var races = Enum.GetValues(typeof(Race));
+            int index = 1;
+            foreach (var race in races)
+            {
+                Console.WriteLine($"{index}) {race}");
+                index++;
+            }
+            Console.WriteLine("Please select a race from the list above....");
+
+            int userInput = int.Parse(Console.ReadLine()) - 1;
+            Race userRace = (Race)userInput;
+            Console.WriteLine(userRace);
+
+            Player player = new Player(userName, 70, 5, 40, 40, userRace, colt);
+
+            Console.Clear();
+            Console.WriteLine($"Welcome {player.Name}, your HUNT begins!");
+            bool exit = false;
+
+            do
+            {
+
+
+
+                string room = GetRoom();
+                Console.WriteLine(room);
+
+
+                Monster monster = Monster.GetMonster();
+
+                Console.WriteLine("In this room...." + monster.Name);
+
+                bool reload = false;
+
+                do
+                {
+                    Console.Write("\nPlease choose an action:\n" +
+                        "A) Attack\n" +
+                        "R) Run away\n" +
+                        "P) Player Info\n" +
+                        "M) Monster Info\n" +
+                        "X) Exit\n");
+                    string userChoice = Console.ReadKey(true).Key.ToString();
+                    Console.Clear();
+
+                    switch (userChoice)
+                    {
+                        case "A":
+                            Console.WriteLine("Attack!");
+
+                            Combat.DoBattle(player, monster);
+                            if (monster.Life <= 0)
+                            {
+                                score++;
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine($"\nYou killed {monster.Name}!");
+                                Console.Beep(700, 500);
+                                Console.ResetColor();
+                                reload = true;
+                            }
+                            if (player.Life <= 0)
+                            {
+                                Console.WriteLine("Call Cas, we need healed!\a");
+                                exit = true;
+                            }
+                            break;
+                        case "R":
+                            Console.WriteLine("Run away!");
+                            Console.WriteLine($"{monster.Name} attacks you as you flee!");
+                            Combat.DoAttack(monster, player);
+                            reload = true;
+                            break;
+                        case "P":
+                            Console.WriteLine("Player Info");
+                            Console.WriteLine(player);
+                            Console.WriteLine("Monsters Defeated: " + score);
+                            break;
+
+                        case "M":
+                            Console.WriteLine("Monster Info");
+                            Console.WriteLine(monster);
+                            break;
+
+                        case "X":
+                        case "E":
+                        case "Escape":
+                            Console.WriteLine("Hunters don't quit...");
+                            exit = true;
+                            break;
+
+                        default:
+                            Console.WriteLine("Please try again...");
+                            break;
+                    }
+
+                } while (!exit && !reload);
+
+            } while (!exit);
+            Console.WriteLine("You defeated " + score + " monster" + (score == 1 ? "." : "s"));
+            Console.WriteLine("\n\nThanks for playing! Press any key to exit...");
+            Console.ReadKey();
 
 
             #region Terminator
             Console.WriteLine("\n\n\nPress any key to exit the application...");
             Console.ReadKey(true);
             #endregion
-        }//end Main()
-
-        private static void GameLoop()
+        }
+        private static string GetRoom()
         {
-            PlayerModel player = new PlayerModel();
-            bool exitGame = false;
-            // a new game has begun with the creation of the player.
-
-
-            do // this do loop represents the life (and eventual death) of your character.
+            string[] rooms =
             {
 
-                if (player.Character is null) // does the player have a living character?  If no (due to death or new game, then make one)
-                {
-                    // your new character is born inside here.
-                    Console.WriteLine("Please create a new character.");
-                    player.CreateCharacter();
-                }
-                else
-                {
-                    // inside here is the story of your character.
-                    // upon first creation of the character we can assume he/she has just set foot inside the dungeon.
-                    // or the character has either 'ran' from an enounter with a monster or has 'beaten' a monster in combat
 
-                    #region Inner Loop
+                "You enter an abandoned warehouse and hear footsteps in the distance.",
+                "You are investigating a murder when suddenly you turn around and...",
+                "The room looks just like the room you are sitting in right now... or does it?",
+                "Speeding down the highway you get pulled over and realize that's not really a cop...",
+                "The room is dark with an eerie feeling of someone behind you.",
+                "You are doing research at a restaurant with your brother when you notice..",
+                "Walking into a room the lights flicker on and off with a smell of sulfur...",                
 
-                    Console.Clear();
-                    string choice = string.Empty;
-
-                    string currentRoom = player.GetRoomDescription();
-                    MonsterModel monster = new MonsterModel();
-                    // a new room (theme) and encounter (monster to fight) must now be generated before entering the combat loop.
-
-                    do
-                    {
-                        // Menu
-                        Console.WriteLine(currentRoom + "\n\nYou see a " + monster.Race + " standing in the shadow.\n\n");
-                        Console.WriteLine("<--Make your next move!-->\n");
-                        Console.WriteLine("A. Attack\n" +
-                                          "R. Run Away\n" +
-                                          "C. Character Info\n" +
-                                          "M. Monster Info\n" +
-                                          "W. Weapon Info\n" +
-                                          "E. Exit");
-
-                        choice = Console.ReadKey(true).Key.ToString();
-                        Console.Clear();
-
-                        switch (choice)
-                        {
-                            case "A":
-                                Console.WriteLine("Attack");
-                                break;
-
-                            case "R":
-                                Console.WriteLine("Run Away");
-                                break;
-
-                            case "C":
-                                Console.WriteLine("Character Info");
-                                DisplayCharacterInfo(player.Character);
-                                break;
-
-                            case "M":
-                                Console.WriteLine("Monster Info");
-                                DisplayMonsterInfo(monster);
-                                break;
-
-                            case "W":
-                                Console.WriteLine("Weapon Info");
-                                DisplayWeaponInfo(player.Character.EquippedWeapon);
-                                break;
-
-                            case "E":
-                                Console.WriteLine("Exit");
-                                exitGame = true;
-                                break;
-
-                            default:
-                                Console.WriteLine("Invalid Choice.");
-                                break;
-                        }
-
-                    } while (exitGame != true && choice.ToLower() != "r");
-
-                    if (choice.ToLower() == "r")
-                    {
-                        Console.WriteLine("You ran away!! \n\nPress Q to quit \nPress any other key to enter another room.");
-                        string selection = Console.ReadKey(true).Key.ToString();
-                        
-                        if (selection.ToLower() == "q")
-                        {
-                            exitGame = true;
-                        }
-
-                    }
-                    #endregion Inner Loop
-
-                }
-
-            } while (!exitGame);
-
-
-
-
-
-        }//end GameLoop
-
-        static void DisplayCharacterInfo(CharacterModel character)
-        {
-            Console.Clear();
-
-            Console.WriteLine($"Name:      {character.Name}");
-            Console.WriteLine($"Race:      {character.Race}");
-            Console.WriteLine($"Life:      {character.Life}");
-            Console.WriteLine($"Attack:    {character.Attack}");
-            Console.WriteLine($"Defense:   {character.Defense}");
-            
-
-
-            Console.WriteLine("");
-            Console.WriteLine("Press any key to return to menu...");
-            Console.ReadKey();
-            Console.Clear();
+            };
+            return rooms[new Random().Next(rooms.Length)];
         }
 
-        static void DisplayMonsterInfo(MonsterModel monster)
-        {
-            Console.Clear();
 
-            Console.WriteLine($"Race:       {monster.Race}");
-            Console.WriteLine($"Life:       {monster.Life}");
-            Console.WriteLine($"Attack:     {monster.Attack}");
-            Console.WriteLine($"Defense:    {monster.Defense}");
 
-            Console.WriteLine("");
-            Console.WriteLine("Press any key to return to menu...");
-            Console.ReadKey();
-            Console.Clear();
-        }
 
-        static void DisplayWeaponInfo(WeaponModel weapon)
-        {
-            Console.Clear();
-
-            Console.WriteLine($"Name:             {weapon.Name}");
-            Console.WriteLine($"MinDamage:        {weapon.MinDamage}");
-            Console.WriteLine($"MaxDamage:        {weapon.MaxDamage}");
-            Console.WriteLine($"Is Two Handed:    {weapon.IsTwoHanded}");
-
-            Console.WriteLine("");
-            Console.WriteLine("Press any key to return to menu...");
-            Console.ReadKey();
-            Console.Clear();
-
-        }
-
-    }//end class
-}//end namespace
+    }
+}
