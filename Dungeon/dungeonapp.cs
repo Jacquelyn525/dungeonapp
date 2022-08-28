@@ -62,6 +62,7 @@ namespace Dungeon
                         "R) Run away\n" +
                         "P) Player Info\n" +
                         "M) Monster Info\n" +
+                        "W) Weapon Infor\n" +
                         "X) Exit\n");
                     string userChoice = Console.ReadKey(true).Key.ToString();
                     Console.Clear();
@@ -102,6 +103,11 @@ namespace Dungeon
                         case "M":
                             Console.WriteLine("Monster Info");
                             Console.WriteLine(monster);
+                            break;
+
+                        case "W":
+                            Console.WriteLine("Weapon Info");
+                            
                             break;
 
                         case "X":
