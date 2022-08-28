@@ -68,19 +68,19 @@ Description:
 
         public static Monster GetMonster()
         {            
-            Vampire vampire = new Vampire("Gordon", 30, 30, 70, 8, 8, 1, "The most hated vamp ever.", true);
+            Vampire vampire = new Vampire("Gordon", 24, 20, 70, 8, 8, 1, "The most hated vamp ever.", true);
             Djinn djinn = new Djinn("Brigitta", 17, 25, 50, 10, 4, 1, "Beautiful with a poisonus touch.", true);
-            Lucifer archAngel = new Lucifer("Lucifer", 10, 20, 65, 20, 15, 1, "The father of hell.", true);
-            Demon demon = new Demon("Abaddon", 25, 25, 50, 20, 8, 2, "She is quite the firey redhead.",true);
+            Lucifer archAngel = new Lucifer("Lucifer", 30, 30, 70, 20, 15, 1, "The father of hell.", true);
+            Demon demon = new Demon("Abaddon", 15, 25, 50, 20, 8, 2, "She is quite the firey redhead.",true);
             
 
             List<Monster> monsters = new List<Monster>()
             {
                 
                 vampire,vampire,vampire,
-               djinn,djinn,
+               djinn,djinn,djinn,
                 archAngel,
-                demon, demon, 
+                demon, demon, demon 
             };
             
             return monsters[new Random().Next(monsters.Count)];
