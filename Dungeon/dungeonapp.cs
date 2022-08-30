@@ -1,4 +1,4 @@
-﻿using DungeonLibrary;
+using DungeonLibrary;
 using MonsterLibrary;
 
 
@@ -37,7 +37,7 @@ namespace Dungeon
             Player player = new Player(userName, 70, 5, 40, 40, userRace, colt);
 
             Console.Clear();
-            Console.WriteLine($"Welcome {player.Name}, your HUNT begins!");
+            Console.WriteLine($"Welcome {player.Name}, your HUNT begins!\n");
             bool exit = false;
 
             do
@@ -62,7 +62,7 @@ namespace Dungeon
                         "R) Run away\n" +
                         "P) Player Info\n" +
                         "M) Monster Info\n" +
-                        "W) Weapon Infor\n" +
+                        "W) Weapon Info\n" +
                         "X) Exit\n");
                     string userChoice = Console.ReadKey(true).Key.ToString();
                     Console.Clear();
