@@ -1,4 +1,4 @@
-﻿using DungeonLibrary;
+using DungeonLibrary;
 using MonsterLibrary;
 
 
@@ -103,6 +103,11 @@ namespace Dungeon
                         case "M":
                             Console.WriteLine("Monster Info");
                             Console.WriteLine(monster);
+                            break;
+
+                        case "W":
+                            Console.WriteLine("Weapon Info");
+                            
                             break;
 
                         case "X":

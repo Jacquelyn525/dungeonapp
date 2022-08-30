@@ -42,7 +42,7 @@ namespace MonsterLibrary
             Description = description;
         }
         
-        public Monster()
+        public Monster()// this is a default constructor, need it to make a default "monster"
         {         
              //ask why this?                                                                         
 
