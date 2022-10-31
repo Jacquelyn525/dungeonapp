@@ -8,6 +8,8 @@ namespace DungeonLibrary
                         
         private Weapon _equippedWeapon;
 
+        
+
         public Weapon EquippedWeapon
         {            
             get { return _equippedWeapon; }
@@ -15,9 +17,12 @@ namespace DungeonLibrary
 
         }
 
+        public List <Weapon> AvailableWeapons { get; private set; }
+
         public Player(string name, int hitChance, int block, int maxLife, int life, Race characterRace, Weapon equippedWeapon)
             : base(name, hitChance, block, maxLife, life)
         {
+            Weapons();
             CharacterRace = characterRace;
             EquippedWeapon = equippedWeapon;
             
@@ -42,7 +47,9 @@ namespace DungeonLibrary
             }
 
 
-            
+            //get a random weapon from available weapons
+
+            //set equipped weapon to random weapon
         }
 
         public override string ToString()
@@ -80,6 +87,26 @@ namespace DungeonLibrary
 
             return damage;
             
+        }
+
+
+        private void Weapons()
+        {
+            Weapon colt = new Weapon(8, 1, "The Colt", 10, false, WeaponType.Colt);
+            Weapon demonBlade = new Weapon(8, 1, "Demon Blade", 10, false, WeaponType.DemonBlade);
+            Weapon angelBlade = new Weapon(8, 1, "Angel Blade", 10, false, WeaponType.AngelBlade);
+            Weapon shotgun = new Weapon(8, 1, "Shotgun", 10, true, WeaponType.Shotgun);
+
+
+            AvailableWeapons = new List<Weapon>()
+            {
+                shotgun,shotgun,shotgun,
+                demonBlade,demonBlade,
+                angelBlade,angelBlade,
+                colt
+            };
+
+            return;  
         }
     }
 }

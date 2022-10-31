@@ -1,7 +1,7 @@
 using DungeonLibrary;
 using MonsterLibrary;
-
-
+using System.Drawing;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Dungeon
 {
@@ -16,7 +16,7 @@ namespace Dungeon
             int score = 0;
 
 
-            Weapon colt = new Weapon(8, 1, "The Colt", 10, false, WeaponType.Colt);
+           
 
             Console.WriteLine("Hello Hunter! What is your name? ");
             string userName = Console.ReadLine();
@@ -34,7 +34,20 @@ namespace Dungeon
             Race userRace = (Race)userInput;
             Console.WriteLine(userRace);
 
-            Player player = new Player(userName, 70, 5, 40, 40, userRace, colt);
+            var weapons = Enum.GetValues(typeof(WeaponType));
+            int start = 1;
+            foreach(var weapon in weapons)
+            {
+                Console.WriteLine($"{index}) {weapon}");
+                start++;
+            }
+            Console.WriteLine("Please select a weapon from the list above....");
+
+            int usrInput = int.Parse(Console.ReadLine()) - 1;
+            WeaponType userWeapon = (WeaponType)usrInput;
+            Console.WriteLine(userWeapon);
+
+            Player player = new Player(userName, 70, 5, 40, 40, userRace, userWeapon);
 
             Console.Clear();
             Console.WriteLine($"Welcome {player.Name}, your HUNT begins!\n");
@@ -107,7 +120,7 @@ namespace Dungeon
 
                         case "W":
                             Console.WriteLine("Weapon Info");
-                            
+                            player.EquippedWeapon.InfoDisplay();
                             break;
 
                         case "X":
@@ -154,7 +167,18 @@ namespace Dungeon
         }
 
 
+        public static string GetWeapon()
+        {
+            string[] weapons =
+            {
+                "Colt",
+                "Demon Blade",
+                "Shotgun",
+                "Angel Blade"
 
+            };
+            return weapons[new Random().Next(weapons.Length)];
+        }
 
     }
 }

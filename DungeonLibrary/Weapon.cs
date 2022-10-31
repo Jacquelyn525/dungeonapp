@@ -1,7 +1,7 @@
 ﻿
 namespace DungeonLibrary
 {
-    public class Weapon
+    public class Weapon 
     {
         private int _minDamage;
         private int _maxDamage;
@@ -66,31 +66,48 @@ namespace DungeonLibrary
                 case WeaponType.DemonBlade:
                     maxDamage += 10;
                     minDamage += 5;
+                    bonusHitChance += 2;
                     break;
                 case WeaponType.AngelBlade:
                     maxDamage += 30;
                     minDamage += 20;
+                    bonusHitChance += 5;
                     break;
                 case WeaponType.Shotgun:
                     maxDamage += 15;
                     minDamage += 5;
+                    isTwoHanded = true;
                     break;
             }
         }
-        
 
+        public void InfoDisplay() {
+
+            Console.WriteLine("Name: " + this.Name);
+            Console.WriteLine("Damage range: " + this.MinDamage.ToString() + "-" + this.MaxDamage.ToString());
+
+        }
 
 
         public override string ToString()
         {
-            return string.Format("{0}\t{1} to {2} Damage\n" +
-                "Bonus Hit: {3}%\n{4}\t\t{5}",
-                Name,
-                MinDamage,
-                MaxDamage,
-                BonusHitChance,
-                Type,
-                IsTwoHanded ? "Two-Handed" : "One-Handed");
+            string description = "";
+            switch (Type)
+            {
+                case WeaponType.Colt:
+                    description = "Colt";
+                    break;
+                case WeaponType.DemonBlade:
+                    description = "Demon Blade";
+                    break;
+                case WeaponType.AngelBlade:
+                    description = "Angel Blade";
+                    break;
+                case WeaponType.Shotgun:
+                    description = "Shotgun";
+                    break;
+            }
+            return base.ToString() + description;
         }
     }
 }
